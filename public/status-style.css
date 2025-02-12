@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1f1f1f;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.server-info {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    width: 90%;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #f8f8f8;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #D9D9D9;
+}
+
+strong {
+    color: #C64740;
+}

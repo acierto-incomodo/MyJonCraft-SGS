@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyJonCraft SGS | Status</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="status-style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-title">MyJonCraft SGS</div>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/modpack">ModPack</a></li>
+            <li><a href="/status">Status</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Status</h1>
+    </div>
+    <div class="server-info">
+        <h1>Información del Servidor Minecraft</h1>
+        
+        <img src="https://mcapi.us/server/image?ip=myjoncraft.mooo.com&port=16384&theme=dark" alt="Server Icon" style="border-radius: 8px;">
+        <div id="server-status">
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <script>
+        // Función para convertir los códigos de color de Minecraft a colores CSS
+        function convertMinecraftColors(motd) {
+            const colorMap = {
+                '§0': '#000000', // Negro
+                '§1': '#0000AA', // Azul oscuro
+                '§2': '#00AA00', // Verde oscuro
+                '§3': '#00AAAA', // Aqua oscuro
+                '§4': '#AA0000', // Rojo oscuro
+                '§5': '#AA00AA', // Púrpura
+                '§6': '#FFAA00', // Naranja
+                '§7': '#AAAAAA', // Gris claro
+                '§8': '#555555', // Gris oscuro
+                '§9': '#5555FF', // Azul claro
+                '§a': '#55FF55', // Verde claro
+                '§b': '#55FFFF', // Aqua claro
+                '§c': '#FF5555', // Rojo
+                '§d': '#FF55FF', // Rosa
+                '§e': '#FFFF55', // Amarillo
+                '§f': '#FFFFFF', // Blanco
+            };
+
+            // Reemplazar los códigos de color Minecraft con los colores CSS
+            return motd.replace(/§[0-9a-fk-or]/g, (match) => {
+                // Si es un código de color válido, reemplazar por el color
+                if (colorMap[match]) {
+                    return `<span style="color:${colorMap[match]}">`;
+                }
+                // Si es un código de formato (negrita, cursiva, etc.), simplemente lo ignoramos
+                return '';
+            }).replace(/§r/g, '</span>'); // Cerrar la etiqueta <span> cuando se usa el código §r (reset)
+        }
+
+        // Función para obtener el estado del servidor
+        function fetchServerInfo() {
+            const url = 'https://mcapi.us/server/status?ip=myjoncraft.mooo.com&port=16384';
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const serverStatus = document.getElementById('server-status');
+
+                    if (data.online) {
+                        // Convertir el MOTD con colores
+                        const coloredMotd = convertMinecraftColors(data.motd);
+
+                        // Mostrar la imagen del servidor utilizando la URL proporcionada
+                        let serverIcon = '';
+                        if (data.icon) {
+                            // Usamos la URL de la imagen proporcionada
+                            serverIcon = `<img src="https://mcapi.us/server/image?ip=myjoncraft.mooo.com&port=16384" alt="Server Icon" style="width: 64px; height: 64px; border-radius: 8px;">`;
+                        }
+
+                        serverStatus.innerHTML = `
+                    <p><strong>Servidor: </strong>Online</p>
+                    <p><strong>MOTD: </strong>${coloredMotd}</p>
+                `;
+                    } else {
+                        serverStatus.innerHTML = '<p><strong>El servidor está offline.</strong></p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener la información del servidor:', error);
+                    document.getElementById('server-status').innerHTML = '<p><strong>Error al conectar al servidor.</strong></p>';
+                });
+        }
+
+        // Llamar a la función para obtener la información al cargar la página
+        window.onload = function () {
+            fetchServerInfo();
+            // Actualizar la información cada 30 segundos (30000 ms)
+            setInterval(fetchServerInfo, 30000);
+        };
+    </script>
+</body>
+
+</html>
