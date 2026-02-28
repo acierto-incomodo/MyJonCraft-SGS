@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 OWNER = "acierto-incomodo"
 REPO = "MyJonCraft-SGS"
-ZIP_NAME = "MyJonCraft SGS.zip"
+ZIP_NAME = "MyJonCraft-SGS.zip"
 VERSION_FILE = "version.txt"
 
 def descargar_github_file(path, save_as):

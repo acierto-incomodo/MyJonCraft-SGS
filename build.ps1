@@ -1,1 +1,1 @@
-pyinstaller --onefile instalador.py
+python -m PyInstaller --onefile MyJonCraft-SGS.py
